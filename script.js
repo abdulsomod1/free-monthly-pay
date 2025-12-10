@@ -66,6 +66,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   signupForm.addEventListener('submit',(e)=>{
     e.preventDefault();
+    const submitBtn = signupForm.querySelector('button[type="submit"]');
+    if(submitBtn) submitBtn.disabled = true;
     const form = new FormData(signupForm);
     // Robust name extraction: check common fields then fallback to any input that looks like a name
     function getNameFromForm(formEl){
@@ -92,22 +94,37 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
 
     const name = getNameFromForm(signupForm);
-    // Simulate submission & show toast
-    closeModal();
+    if(!name){
+      toast.textContent = 'Please enter a name.';
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'),4500);
+      if(submitBtn) submitBtn.disabled = false;
+      return;
+    }
     // Persist submission (only store name + time) in localStorage
     const key = 'fmp_submissions';
     const existing = JSON.parse(localStorage.getItem(key) || '[]');
-    existing.push({name: name || '', time: Date.now()});
+    if(existing.length && existing[existing.length-1].name === name){
+      toast.textContent = 'Duplicate consecutive name not allowed.';
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'),4500);
+      if(submitBtn) submitBtn.disabled = false;
+      return;
+    }
+    // Simulate submission & show toast
+    closeModal();
+    existing.push({name: name, time: Date.now()});
     localStorage.setItem(key, JSON.stringify(existing));
 
     // Update UI: add dashboard button (if needed) and refresh list
     addDashboardButton();
     renderDashboardList();
 
-    toast.textContent = `Thanks, ${name || 'there'} — you were added to the dashboard.`;
+    toast.textContent = `Thanks, ${name} — you were added to the dashboard.`;
     toast.classList.add('show');
     setTimeout(()=>toast.classList.remove('show'),4500);
     signupForm.reset();
+    if(submitBtn) submitBtn.disabled = false;
   });
 
   // -- Dashboard support -------------------------------------------------
