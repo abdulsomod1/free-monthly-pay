@@ -131,6 +131,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const mainNav = document.getElementById('mainNav');
   const dashboardSection = document.getElementById('dashboardSection');
   const dashboardList = document.getElementById('dashboardList');
+  const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
   function getSubmissions(){
     try{return JSON.parse(localStorage.getItem('fmp_submissions')||'[]')}catch(e){return[]}
@@ -151,7 +152,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     dashboardSection.removeAttribute('hidden');
     dashboardList.innerHTML = '';
     items.forEach((it, idx)=>{
-      const displayName = (it.name && it.name.trim()) || (it.email ? String(it.email).split('@')[0] : 'Unnamed');
+      let displayName = (it.name && it.name.trim()) || (it.email ? String(it.email).split('@')[0] : 'Unnamed');
+      // Remove leading number prefix like "1. " to avoid double numbering
+      displayName = displayName.replace(/^\d+\.\s*/, '');
       const li = document.createElement('li');
       li.textContent = `${idx+1}. ${displayName}`;
       dashboardList.appendChild(li);
@@ -208,6 +211,17 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(getSubmissions().length) addDashboardButton();
   // Render if present
   renderDashboardList();
+
+  // Clear history button
+  if(clearHistoryBtn){
+    clearHistoryBtn.addEventListener('click',()=>{
+      localStorage.removeItem('fmp_submissions');
+      renderDashboardList();
+      // remove dashboard button if no submissions
+      const dbBtn = document.getElementById('dashboardBtn');
+      if(dbBtn) dbBtn.remove();
+    });
+  }
 
   // simple reduce motion respect
   const mq=window.matchMedia('(prefers-reduced-motion: reduce)');
