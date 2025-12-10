@@ -159,7 +159,9 @@ body {
   gap: 24px;
   list-style: none;
   padding: 0;
-  margin: 0
+  margin: 0;
+  align-items: stretch;
+  flex-wrap: wrap;
 }
 
 .feature-list li {
@@ -170,7 +172,9 @@ body {
   gap: 12px;
   align-items: center;
   color: var(--muted);
-  flex: 1
+  flex: 1 1 220px;
+  min-width: 180px;
+  word-break: break-word;
 }
 
 .feature-list .icon {
@@ -258,8 +262,32 @@ body {
 footer {
   padding: 28px 0;
   color: var(--muted);
-  text-align: center
+  text-align: center;
+  background: linear-gradient(90deg,#07101a 0%,#0b1220 100%);
 }
+
+.footer-inner{display:flex;align-items:center;justify-content:center}
+
+/* Navigation (in header) */
+.main-nav{margin-left:auto;display:flex;gap:12px}
+.nav-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+.nav-btn:focus{outline:2px solid rgba(94,234,212,0.18);outline-offset:3px}
+.nav-btn.dashboard{background:linear-gradient(90deg,var(--accent),#60a5fa);color:#062024;border:0}
+
+/* Animated highlight for newly added dashboard button */
+.nav-btn.new{animation:pop-in 900ms cubic-bezier(.16,1,.3,1)}
+@keyframes pop-in{0%{transform:scale(.85);opacity:0}60%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
+
+/* Dashboard section styles */
+.dashboard-section{padding:40px 0;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent)}
+.dashboard-section h3{color:#e6eef8;margin:0 0 12px}
+.dashboard-list{margin:0;padding-left:18px;color:var(--muted)}
+.dashboard-list li{padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:8px}
+.dashboard-visible{display:block}
+
+/* small badge for nav counts */
+.nav-badge{display:inline-block;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#ff6b6b;color:#fff;font-size:0.8rem;line-height:20px;text-align:center;margin-left:8px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,0.3)}
+.nav-badge.hidden{display:none}
 
 @keyframes float {
   0% {
@@ -289,6 +317,19 @@ footer {
   .floating-card {
     width: 100%
   }
+
+  /* On tablets, show two feature items per row to avoid long single-line overflow */
+  .feature-list {
+    gap: 18px;
+  }
+  .feature-list li {
+    flex: 1 1 calc(50% - 18px);
+    min-width: 200px;
+  }
+
+  footer {
+    padding: 24px 0;
+  }
 }
 
 @media (max-width: 768px) {
@@ -304,16 +345,74 @@ footer {
   .tasks-section h3 {
     font-size: 1.5em;
   }
+
+  .container {
+    padding: 16px;
+  }
+
+  .hero-card {
+    padding: 16px;
+  }
+
+  .feature-list {
+    flex-direction: column;
+    gap: 16px;
+  }
 }
 
-/* Modal styles */
+@media (max-width: 480px) {
+  .tasks {
+    gap: 10px;
+  }
+
+  .task-btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .tasks-section h3 {
+    font-size: 1.3em;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-sub {
+    font-size: 1em;
+  }
+
+  .brand {
+    font-size: 1.4rem;
+  }
+
+  .logo {
+    width: 60px;
+  }
+
+  .container {
+    padding: 12px;
+  }
+
+  .hero-card {
+    padding: 12px;
+  }
+
+  .feature-list li {
+    padding: 12px;
+  }
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.6);
+  background: rgba(2, 6, 23, 0.8);
   display: none;
   align-items: center;
   justify-content: center;
+  padding: 24px;
+  z-index: 60
+}
   padding: 24px;
   z-index: 60
 }
