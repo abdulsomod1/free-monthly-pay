@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       // Remove leading number prefix like "1. " to avoid double numbering
       displayName = displayName.replace(/^\d+\.\s*/, '');
       const li = document.createElement('li');
-      li.textContent = `${idx+1}. ${displayName}`;
+      li.textContent = displayName;
       dashboardList.appendChild(li);
     });
     // Update badge count (if button exists)
