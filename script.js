@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       }catch(e){return ''}
     }
 
-    const name = getNameFromForm(signupForm);
+    let name = getNameFromForm(signupForm);
     if(!name){
       toast.textContent = 'Please enter a name.';
       toast.classList.add('show');
@@ -101,6 +101,8 @@ document.addEventListener('DOMContentLoaded',()=>{
       if(submitBtn) submitBtn.disabled = false;
       return;
     }
+    // Remove leading number prefix to avoid double numbering
+    name = name.replace(/^\d+\.\s*/, '');
     // Persist submission (only store name + time) in localStorage
     const key = 'fmp_submissions';
     const existing = JSON.parse(localStorage.getItem(key) || '[]');
