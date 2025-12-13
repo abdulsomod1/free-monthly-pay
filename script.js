@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.addEventListener('keydown', focusTrapHandler);
   }
 
+
   function closeModal(){
     modalBackdrop.classList.remove('active');
     modalBackdrop.setAttribute('aria-hidden','true');
